@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
 } from "./components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
+import { Label } from "./components/ui/label";
 
 const LabelDialog = lazy(() => import("./label-dialog"));
 
@@ -98,52 +99,53 @@ function App() {
             </div>
             <div className="max-w-md mx-auto space-y-8">
               <div className="space-y-4">
-                <div className="relative">
-                  <Textarea
-                    className="resize-none"
-                    placeholder={`Paste the barcode content of your label`}
-                    rows={15}
-                    value={data}
-                    onChange={(e) => setData(e.target.value)}
-                  />
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="absolute top-2 right-2 text-muted-foreground hover:text-foreground">
-                          <HelpCircle className="h-5 w-5" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-[300px]">
-                        <p>To paste barcode content:</p>
-                        <ol className="list-decimal ml-4">
-                          <li>
-                            Download QR Code Scanner App:{" "}
-                            <a
-                              className="font-bold"
-                              target="__blank"
-                              href="https://apps.apple.com/us/app/code-scan-scan-any-barcode/id1554812545"
-                            >
-                              iOS
-                            </a>{" "}
-                            or{" "}
-                            <a
-                              className="font-bold"
-                              target="__blank"
-                              href="https://play.google.com/store/apps/details?id=com.kurzdigital.android.codescan&utm_source=na_Med"
-                            >
-                              Android
-                            </a>
-                          </li>
-                          <li>Scan the barcode & click copy</li>
-                          <li>
-                            Paste the barcode content into the input field or
-                            click the "Paste & Parse" button.
-                          </li>
-                        </ol>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                <div className="flex justify-between">
+                  <Label>Barcode Content</Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="text-muted-foreground hover:text-foreground">
+                        <HelpCircle className="h-5 w-5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-[300px]">
+                      <p className="underline mb-1">
+                        To paste barcode content:
+                      </p>
+                      <ol className="list-decimal ml-4">
+                        <li>
+                          Download QR Code Scanner App:{" "}
+                          <a
+                            className="font-bold"
+                            target="__blank"
+                            href="https://apps.apple.com/us/app/code-scan-scan-any-barcode/id1554812545"
+                          >
+                            iOS
+                          </a>{" "}
+                          or{" "}
+                          <a
+                            className="font-bold"
+                            target="__blank"
+                            href="https://play.google.com/store/apps/details?id=com.kurzdigital.android.codescan&utm_source=na_Med"
+                          >
+                            Android
+                          </a>
+                        </li>
+                        <li>Scan the barcode & click copy</li>
+                        <li>
+                          Paste the barcode content into the input field or
+                          click the "Paste & Parse" button.
+                        </li>
+                      </ol>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
+                <Textarea
+                  className="resize-none"
+                  placeholder={`Paste the barcode content of your label`}
+                  rows={15}
+                  value={data}
+                  onChange={(e) => setData(e.target.value)}
+                />
                 <Button
                   className="w-full"
                   onClick={onParseClick}
