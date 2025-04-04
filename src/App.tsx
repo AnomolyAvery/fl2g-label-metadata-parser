@@ -1,18 +1,17 @@
+import { HelpCircle } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import "./App.css";
 import { FoodLionLogo } from "./components/fl-logo";
 import { ThemeProvider } from "./components/theme-provider";
 import { ThemeToggle } from "./components/theme-toggle";
 import { Button } from "./components/ui/button";
-import { Textarea } from "./components/ui/textarea";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./components/ui/tooltip";
-import { HelpCircle } from "lucide-react";
 import { Label } from "./components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./components/ui/popover";
+import { Textarea } from "./components/ui/textarea";
 
 const LabelDialog = lazy(() => import("./label-dialog"));
 
@@ -86,104 +85,100 @@ function App() {
   return (
     <div className="relative">
       <ThemeProvider>
-        <TooltipProvider>
-          <div className="absolute top-0 right-0">
-            <ThemeToggle />
+        <div className="absolute top-0 right-0">
+          <ThemeToggle />
+        </div>
+        <div className="max-w-6xl mx-auto container space-y-6 px-2 md:px-20 py-12">
+          <div className="p-4 max-w-md mx-auto flex flex-col items-center">
+            <FoodLionLogo />
+            <h1 className="text-lg sm:text-2xl font-bold">
+              FL2G Label Metadata Parser
+            </h1>
           </div>
-          <div className="max-w-6xl mx-auto container space-y-6 px-2 md:px-20 py-12">
-            <div className="p-4 max-w-md mx-auto flex flex-col items-center">
-              <FoodLionLogo />
-              <h1 className="text-lg sm:text-2xl font-bold">
-                FL2G Label Metadata Parser
-              </h1>
-            </div>
-            <div className="max-w-md mx-auto space-y-8">
-              <div className="space-y-4">
-                <div className="flex justify-between">
-                  <Label>Barcode Content</Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button className="text-muted-foreground hover:text-foreground">
-                        <HelpCircle className="h-5 w-5" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-[300px]">
-                      <p className="underline mb-1">
-                        To paste barcode content:
-                      </p>
-                      <ol className="list-decimal ml-4">
-                        <li>
-                          Download QR Code Scanner App:{" "}
-                          <a
-                            className="font-bold"
-                            target="__blank"
-                            href="https://apps.apple.com/us/app/code-scan-scan-any-barcode/id1554812545"
-                          >
-                            iOS
-                          </a>{" "}
-                          or{" "}
-                          <a
-                            className="font-bold"
-                            target="__blank"
-                            href="https://play.google.com/store/apps/details?id=com.kurzdigital.android.codescan&utm_source=na_Med"
-                          >
-                            Android
-                          </a>
-                        </li>
-                        <li>Scan the barcode & click copy</li>
-                        <li>
-                          Paste the barcode content into the input field or
-                          click the "Paste & Parse" button.
-                        </li>
-                      </ol>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                <Textarea
-                  className="resize-none"
-                  placeholder={`Paste the barcode content of your label`}
-                  rows={15}
-                  value={data}
-                  onChange={(e) => setData(e.target.value)}
-                />
-                <Button
-                  className="w-full"
-                  onClick={onParseClick}
-                  disabled={loading}
-                >
-                  {loading ? "Loading..." : "Paste & Parse"}
-                </Button>
+          <div className="max-w-md mx-auto space-y-8">
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <Label>Barcode Content</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="text-muted-foreground hover:text-foreground">
+                      <HelpCircle className="h-5 w-5" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="max-w-[300px]">
+                    <p className="underline mb-1">To paste barcode content:</p>
+                    <ol className="list-decimal ml-4">
+                      <li>
+                        Download QR Code Scanner App:{" "}
+                        <a
+                          className="font-bold"
+                          target="__blank"
+                          href="https://apps.apple.com/us/app/code-scan-scan-any-barcode/id1554812545"
+                        >
+                          iOS
+                        </a>{" "}
+                        or{" "}
+                        <a
+                          className="font-bold"
+                          target="__blank"
+                          href="https://play.google.com/store/apps/details?id=com.kurzdigital.android.codescan&utm_source=na_Med"
+                        >
+                          Android
+                        </a>
+                      </li>
+                      <li>Scan the barcode & click copy</li>
+                      <li>
+                        Paste the barcode content into the input field or click
+                        the "Paste & Parse" button.
+                      </li>
+                    </ol>
+                  </PopoverContent>
+                </Popover>
               </div>
-
-              <Suspense
-                fallback={
-                  <p className="font-medium text-muted-foreground text-center">
-                    Loading...
-                  </p>
-                }
+              <Textarea
+                className="resize-none"
+                placeholder={`Paste the barcode content of your label`}
+                rows={15}
+                value={data}
+                onChange={(e) => setData(e.target.value)}
+              />
+              <Button
+                className="w-full"
+                onClick={onParseClick}
+                disabled={loading}
               >
-                <LabelDialog
-                  metadata={metadata}
-                  handleClose={() => {
-                    setMetadata(null);
-                    setData("");
-                  }}
-                />
-              </Suspense>
-              <p className="text-sm text-muted-foreground">
-                Powered by{" "}
-                <a
-                  href="https://www.avery.gg"
-                  target="__blank"
-                  className="font-medium underline"
-                >
-                  Avery Herring's
-                </a>{" "}
-                smarts, built with React and TypeScript. Enjoy! 🚀
-              </p>
+                {loading ? "Loading..." : "Paste & Parse"}
+              </Button>
             </div>
+
+            <Suspense
+              fallback={
+                <p className="font-medium text-muted-foreground text-center">
+                  Loading...
+                </p>
+              }
+            >
+              <LabelDialog
+                metadata={metadata}
+                handleClose={() => {
+                  setMetadata(null);
+                  setData("");
+                }}
+              />
+            </Suspense>
+            <p className="text-sm text-muted-foreground">
+              Powered by{" "}
+              <a
+                href="https://www.avery.gg"
+                target="__blank"
+                className="font-medium underline"
+              >
+                Avery Herring's
+              </a>{" "}
+              smarts, built with React and TypeScript. Enjoy! 🚀
+            </p>
           </div>
-        </TooltipProvider>
+        </div>
       </ThemeProvider>
     </div>
   );
