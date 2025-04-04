@@ -120,6 +120,17 @@ function App() {
               />
             </Suspense>
           </div>
+          <p className="text-sm text-muted-foreground">
+            Powered by{" "}
+            <a
+              href="https://www.avery.gg"
+              target="__blank"
+              className="font-medium underline"
+            >
+              Avery Herring's
+            </a>{" "}
+            smarts, built with React and TypeScript. Enjoy! 🚀
+          </p>
         </div>
       </ThemeProvider>
     </div>
